@@ -99,7 +99,7 @@ public class InventorySyncHandlers implements Listener {
     public void handle(PlayerItemConsumeEvent event) {
         if(ConjoinedPlugin.isConjoined == true) {
             UUID player = event.getPlayer().getUniqueId();
-            if(player.equals(ConjoinedPlugin.movement))
+            if(player.equals(ConjoinedPlugin.interaction))
                 interactControllerInventoryChange();
             else if(player.equals(ConjoinedPlugin.movement))
                 movementControllerInventoryChange();

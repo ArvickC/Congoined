@@ -16,6 +16,11 @@ public class Start implements CommandExecutor {
         if(args.length == 0) {
             if(ConjoinedPlugin.movement != null && ConjoinedPlugin.interaction != null) {
                 ConjoinedPlugin.isConjoined = true;
+
+                ConjoinedPlugin.conjoined.createWorld();
+                ConjoinedPlugin.conjoined_nether.createWorld();
+                ConjoinedPlugin.conjoined_end.createWorld();
+
                 for(Player player : Bukkit.getOnlinePlayers()) {
                     player.setBedSpawnLocation(player.getLocation(), true);
                     player.setHealth(20.0);
@@ -24,9 +29,13 @@ public class Start implements CommandExecutor {
                     player.sendMessage(ChatColor.translateAlternateColorCodes('&', ConjoinedPlugin.prefix + "&a Conjoined Has Begun!"));
                     player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_CHIME, 2.0f, 1.0f);
                 }
+
                 Player movementController = Bukkit.getPlayer(ConjoinedPlugin.movement);
                 Player interactionController = Bukkit.getPlayer(ConjoinedPlugin.interaction);
+
                 movementController.hidePlayer(ConjoinedPlugin.plugin, interactionController);
+                interactionController.hidePlayer(ConjoinedPlugin.plugin, movementController);
+
                 HealthAndHungerSyncHandlers.syncHunger();
             } else {
                 sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&c Pick People Controllers"));

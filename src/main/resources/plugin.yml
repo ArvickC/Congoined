@@ -1,6 +1,13 @@
 name: ConjoinedPlugin
-version: ${project.version}
+version: 1.1.1
 main: me.crazybanana.conjoinedplugin.ConjoinedPlugin
 api-version: 1.16
 authors: [CrazyBanana]
 description: Minecraft But 2 players control 1
+commands:
+  start:
+    description: start
+  interact:
+    description: interact
+  movement:
+    description: movement
