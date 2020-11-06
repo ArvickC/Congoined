@@ -1,5 +1,6 @@
 package me.crazybanana.conjoinedplugin;
 
+import me.crazybanana.conjoinedplugin.commands.ForceEnd;
 import me.crazybanana.conjoinedplugin.commands.Interact;
 import me.crazybanana.conjoinedplugin.commands.Movement;
 import me.crazybanana.conjoinedplugin.commands.Start;
@@ -37,6 +38,7 @@ public final class ConjoinedPlugin extends JavaPlugin implements Listener {
     public Interact interactCommand = new Interact();
     public Movement movementCommand = new Movement();
     public Start startCommand = new Start();
+    public ForceEnd forceendCommand = new ForceEnd();
 
     public static WorldCreator conjoined = new WorldCreator("Conjoined");
     public static WorldCreator conjoined_nether = new WorldCreator("Conjoined_Nether");
@@ -55,6 +57,7 @@ public final class ConjoinedPlugin extends JavaPlugin implements Listener {
         getCommand("start").setExecutor(startCommand);
         getCommand("movement").setExecutor(movementCommand);
         getCommand("interact").setExecutor(interactCommand);
+        getCommand("forceend").setExecutor(forceendCommand);
 
         Bukkit.getPluginManager().registerEvents(has, this);
         Bukkit.getPluginManager().registerEvents(ch, this);
@@ -84,6 +87,8 @@ public final class ConjoinedPlugin extends JavaPlugin implements Listener {
                         player.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix + "&d You&c lost&d to&a " + i.getDisplayName() + "&d and&a " + m.getDisplayName()));
                     }
                 }
+
+                isConjoined = false;
 
                 World delete = Bukkit.getWorld(conjoined.name());
                 File deleteFolder = delete.getWorldFolder();

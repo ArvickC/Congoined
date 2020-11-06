@@ -18,7 +18,13 @@ public class ForceEnd implements CommandExecutor {
             for(Player p : Bukkit.getOnlinePlayers()) {
                 p.sendMessage(ChatColor.translateAlternateColorCodes('&', ConjoinedPlugin.prefix + "&c Game Force-Ended"));
                 p.performCommand("warp l");
+                Player movementController = Bukkit.getPlayer(ConjoinedPlugin.movement);
+                Player interactionController = Bukkit.getPlayer(ConjoinedPlugin.interaction);
+                movementController.hidePlayer(ConjoinedPlugin.plugin, interactionController);
+                interactionController.hidePlayer(ConjoinedPlugin.plugin, movementController);
             }
+
+            ConjoinedPlugin.isConjoined = false;
 
             World delete = Bukkit.getWorld(ConjoinedPlugin.conjoined.name());
             File deleteFolder = delete.getWorldFolder();
