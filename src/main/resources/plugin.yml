@@ -1,0 +1,6 @@
+name: ConjoinedPlugin
+version: ${project.version}
+main: me.crazybanana.conjoinedplugin.ConjoinedPlugin
+api-version: 1.16
+authors: [CrazyBanana]
+description: Minecraft But 2 players control 1
