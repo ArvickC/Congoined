@@ -18,6 +18,8 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.File;
+import java.util.HashMap;
 import java.util.UUID;
 
 public final class ConjoinedPlugin extends JavaPlugin implements Listener {
@@ -26,6 +28,7 @@ public final class ConjoinedPlugin extends JavaPlugin implements Listener {
     public static UUID movement;
     public static UUID interaction;
     public static String prefix = "&8[&bMinecraft But-&d]";
+    public static HashMap<UUID, UUID> groups = new HashMap<>();
 
     public HealthAndHungerSyncHandlers has = new HealthAndHungerSyncHandlers();
     public ConjoinedHandlers ch = new ConjoinedHandlers();
@@ -38,6 +41,8 @@ public final class ConjoinedPlugin extends JavaPlugin implements Listener {
     public static WorldCreator conjoined = new WorldCreator("Conjoined");
     public static WorldCreator conjoined_nether = new WorldCreator("Conjoined_Nether");
     public static WorldCreator conjoined_end = new WorldCreator("Conjoined_End");
+
+    private World world;
 
     @Override
     public void onEnable() {
@@ -65,17 +70,46 @@ public final class ConjoinedPlugin extends JavaPlugin implements Listener {
     public void onPlayerWin(EntityDeathEvent e) {
         if(e instanceof EnderDragon) {
             if(((EnderDragon) e).getKiller() instanceof Player) {
-                Player p = ((EnderDragon) e).getKiller();
-                p.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix + "&a You won!"));
-                p.performCommand("warp l");
+                Player i = ((EnderDragon) e).getKiller();
+                Player m = Bukkit.getPlayer(groups.get(i.getUniqueId()));
+
+                i.sendMessage(ChatColor.translateAlternateColorCodes('&',prefix + "&a You won!"));
+                i.performCommand("warp l");
+                m.sendMessage(ChatColor.translateAlternateColorCodes('&',prefix + "&a You won!"));
+                m.performCommand("warp l");
 
                 for(Player player : Bukkit.getOnlinePlayers()) {
                     if(player.getWorld() == conjoined || player.getWorld() == conjoined_nether || player.getWorld() == conjoined_end) {
                         player.performCommand("warp l");
-                        player.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix + "&d You&c lost&d to&a " + p.getDisplayName()));
+                        player.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix + "&d You&c lost&d to&a " + i.getDisplayName() + "&d and&a " + m.getDisplayName()));
                     }
+                }
+
+                World delete = Bukkit.getWorld(conjoined.name());
+                File deleteFolder = delete.getWorldFolder();
+                deleteWorld(deleteFolder);
+
+                delete = Bukkit.getWorld(conjoined_nether.name());
+                deleteFolder = delete.getWorldFolder();
+                deleteWorld(deleteFolder);
+
+                delete = Bukkit.getWorld(conjoined_end.name());
+                deleteFolder = delete.getWorldFolder();
+                deleteWorld(deleteFolder);
+            }
+        }
+    }
+    public boolean deleteWorld(File path) {
+        if (path.exists()) {
+            File files[] = path.listFiles();
+            for (int i = 0; i < files.length; i++) {
+                if (files[i].isDirectory()) {
+                    deleteWorld(files[i]);
+                } else {
+                    files[i].delete();
                 }
             }
         }
+        return (path.delete());
     }
 }

@@ -1,6 +1,7 @@
 package me.crazybanana.conjoinedplugin.commands;
 
 import me.crazybanana.conjoinedplugin.ConjoinedPlugin;
+import me.crazybanana.conjoinedplugin.handler.ConjoinedHandlers;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -15,7 +16,10 @@ public class Interact implements CommandExecutor {
             Player player = Bukkit.getPlayer(args[0]);
             if(player!=null) {
                 ConjoinedPlugin.interaction = player.getUniqueId();
-                Bukkit.getPlayer(ConjoinedPlugin.interaction).sendMessage(ChatColor.translateAlternateColorCodes('&', ConjoinedPlugin.prefix + "&d You have been assigned&a Interaction&d!"));
+                if(!ConjoinedPlugin.groups.containsKey(ConjoinedPlugin.interaction)) {
+                    ConjoinedPlugin.groups.put(ConjoinedPlugin.interaction, null);
+                    Bukkit.getPlayer(ConjoinedPlugin.interaction).sendMessage(ChatColor.translateAlternateColorCodes('&', ConjoinedPlugin.prefix + "&d You have been assigned&a Interaction&d!"));
+                }
             } else {
                 sender.sendMessage(ChatColor.translateAlternateColorCodes('&', ConjoinedPlugin.prefix + "&c Player Not Found"));
             }
